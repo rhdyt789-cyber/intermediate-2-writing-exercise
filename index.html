@@ -3,38 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About My Family - Writing Exercise</title>
+<title>Story Builder - A Surprise Story</title>
 
 <style>
 body{
     font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
     background:#f4f6f9;
+    margin:0;
+    padding:20px;
 }
 
 .container{
+    max-width:1100px;
+    margin:auto;
     background:white;
     padding:25px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 h1,h2{
     color:#2c3e50;
 }
 
-textarea{
-    width:100%;
-    min-height:120px;
-    padding:10px;
-    margin-top:10px;
+.story-box{
+    background:#eef5ff;
+    border-left:5px solid #3498db;
+    padding:20px;
+    border-radius:8px;
+    margin-bottom:25px;
 }
 
-input{
-    padding:8px;
-    margin:5px;
+.question{
+    margin-bottom:15px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+textarea{
+    min-height:80px;
 }
 
 button{
@@ -44,20 +58,33 @@ button{
     padding:12px 20px;
     border-radius:5px;
     cursor:pointer;
+    margin-top:15px;
 }
 
 button:hover{
     background:#2980b9;
 }
 
-.correct{
-    color:green;
+.result{
+    margin-top:15px;
+    font-size:18px;
     font-weight:bold;
 }
 
-.wrong{
-    color:red;
-    font-weight:bold;
+.generated{
+    background:#fafafa;
+    border:1px solid #ddd;
+    padding:20px;
+    margin-top:20px;
+    border-radius:8px;
+    white-space:pre-wrap;
+}
+
+.feedback{
+    margin-top:20px;
+    background:#f8f9fa;
+    padding:15px;
+    border-radius:8px;
 }
 </style>
 </head>
@@ -65,63 +92,141 @@ button:hover{
 
 <div class="container">
 
+<h1>Story Builder & Narrative Checker</h1>
+
+
+
+<h2>Part A: Reading Comprehension</h2>
+
+<div class="question">
+1. Why did Katia go to the restaurant?
+<input type="text" id="q1">
+</div>
+
+<div class="question">
+2. What problem did Katia have?
+<input type="text" id="q2">
+</div>
+
+<div class="question">
+3. How did she feel before going home?
+<input type="text" id="q3">
+</div>
+
+<div class="question">
+4. What happened at the end?
+<input type="text" id="q4">
+</div>
+
+<button onclick="checkReading()">Check Answers</button>
+
+<div class="result" id="readingResult"></div>
+
 <hr>
 
-<h2>Part A: Fill in the blanks</h2>
+<h2>Part B: Create Your Own Story</h2>
 
-<p>1. Kelly lives in
-<input id="q1"></p>
+<label>Main Character</label>
+<input type="text" id="character" placeholder="Example: Sarah">
 
-<p>2. Kelly's mother's name is
-<input id="q2"></p>
+<label>Setting (Where?)</label>
+<input type="text" id="setting" placeholder="Example: shopping mall">
 
-<p>3. Kelly's father works in a
-<input id="q3"></p>
+<label>Problem</label>
+<textarea id="problem"></textarea>
 
-<p>4. Kelly's sister loves listening to
-<input id="q4"></p>
+<label>Action</label>
+<textarea id="action"></textarea>
 
-<p>5. Brandy is a pet
-<input id="q5"></p>
+<label>Dialogue</label>
+<input type="text" id="dialogue"
+placeholder='Example: "Where is everyone?"'>
 
-<button onclick="checkAnswers()">Check Answers</button>
+<label>Surprise Ending</label>
+<textarea id="ending"></textarea>
 
-<p id="result"></p>
+<button onclick="generateStory()">Generate My Story</button>
 
-<hr>
-
-<h2>Part B: Write About Your Family</h2>
-
-<p>Write 5–8 sentences about your family.</p>
-
-<textarea placeholder="My name is..."></textarea>
+<div id="storyOutput"></div>
 
 </div>
 
 <script>
-function checkAnswers(){
+
+function checkReading(){
 
 let score = 0;
 
-const answers = {
-q1:"california",
-q2:"carmen",
-q3:"bank",
-q4:"music",
-q5:"dog"
-};
+let q1 = document.getElementById("q1").value.toLowerCase();
+let q2 = document.getElementById("q2").value.toLowerCase();
+let q3 = document.getElementById("q3").value.toLowerCase();
+let q4 = document.getElementById("q4").value.toLowerCase();
 
-for(let id in answers){
-let user = document.getElementById(id).value.trim().toLowerCase();
+if(q1.includes("birthday") || q1.includes("dinner")) score++;
+if(q2.includes("friends") || q2.includes("nobody")) score++;
+if(q3.includes("lonely") || q3.includes("miserable")) score++;
+if(q4.includes("surprise") || q4.includes("party")) score++;
 
-if(user === answers[id]){
-score++;
-}
+document.getElementById("readingResult").innerHTML =
+"Reading Score: " + score + " / 4";
 }
 
-document.getElementById("result").innerHTML =
-"You got " + score + " out of 5 correct!";
+function generateStory(){
+
+let character = document.getElementById("character").value;
+let setting = document.getElementById("setting").value;
+let problem = document.getElementById("problem").value;
+let action = document.getElementById("action").value;
+let dialogue = document.getElementById("dialogue").value;
+let ending = document.getElementById("ending").value;
+
+let story =
+"Last weekend, " + character +
+" was visiting " + setting +
+". Everything seemed normal at first.\n\n" +
+
+"However, " + problem + ".\n\n" +
+
+dialogue + " " + character +
+" said nervously.\n\n" +
+
+"Then, " + action + ".\n\n" +
+
+"Suddenly, " + ending + ".\n\n" +
+
+"In the end, everything turned out well.";
+
+let wordCount = story.split(/\s+/).length;
+
+let feedback = "<div class='feedback'><h3>Story Feedback</h3>";
+
+feedback += "✅ Beginning included.<br>";
+feedback += "✅ Problem included.<br>";
+feedback += "✅ Action included.<br>";
+feedback += "✅ Ending included.<br>";
+
+if(dialogue.trim() !== ""){
+feedback += "✅ Direct speech included.<br>";
+}else{
+feedback += "⚠ Add direct speech.<br>";
 }
+
+if(wordCount >= 80){
+feedback += "✅ Good story length.<br>";
+}else{
+feedback += "⚠ Try adding more details.<br>";
+}
+
+feedback += "<br><strong>Total Words: "
++ wordCount + "</strong></div>";
+
+document.getElementById("storyOutput").innerHTML =
+"<div class='generated'><h3>Your Story</h3>" +
+story +
+"</div>" +
+feedback;
+}
+
 </script>
 
 </body>
